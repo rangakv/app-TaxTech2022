@@ -1,0 +1,33 @@
+﻿@model TTS.Web.Models.TextToSpeechModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Cognitive Services - Text to Speech</h1>    
+</div>
+<br />
+<form asp-controller="Home" asp-action="Index" method="post">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-4">
+                <label class="col-form-label">Neural Selection</label>
+                <select asp-items="Model.NeuralPreference" class="btn btn-primary dropdown-toggle" id="ddlLangCode" asp-for="NeuralEndPoint"></select>
+            </div>
+            <div class="col-md-4">
+                <textarea asp-for="Content" rows="5" cols="40" class="alert-primary"></textarea>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            <div class="col-md-4">
+                <label class="col-form-label">Play Voice</label>
+                @if (!string.IsNullOrEmpty(ViewBag.Token))
+                {
+                    <audio controls>
+                        <source src="@Url.Action("Translate", "Home", new { token = ViewBag.Token, key = ViewBag.Key, content = ViewBag.Content, lang = ViewBag.languagecode, serviceuri = ViewBag.serviceuri })" type="audio/mpeg" />
+                    </audio>
+                }
+            </div>
+        </div>
+
+    </div>
+</form>

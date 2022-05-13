@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31613.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTS.Web", "TTS.Web.csproj", "{F2EA9DC1-7190-46F3-B78E-3D47687DF670}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTS.Business", "..\TTS.Business\TTS.Business.csproj", "{B83FC126-F72D-4C7C-AC44-34D5C212ED16}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F2EA9DC1-7190-46F3-B78E-3D47687DF670}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2EA9DC1-7190-46F3-B78E-3D47687DF670}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2EA9DC1-7190-46F3-B78E-3D47687DF670}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2EA9DC1-7190-46F3-B78E-3D47687DF670}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B83FC126-F72D-4C7C-AC44-34D5C212ED16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B83FC126-F72D-4C7C-AC44-34D5C212ED16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B83FC126-F72D-4C7C-AC44-34D5C212ED16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B83FC126-F72D-4C7C-AC44-34D5C212ED16}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6A5F4062-EA45-4811-B6ED-97D52D68CEB6}
+	EndGlobalSection
+EndGlobal
