@@ -3,9 +3,12 @@
 
   * .Net Core
   * Azure
-  * 
+  * SQL Server Database
+  
 #High Level Configuration Steps: 
   * Create an AppService Plan in Azure
+  * Create speech service in Azure
+  * Create SQL Server database in Azure
   * Create an Application Registration in Azure
   * From App Service Plan Authentication --> Enable identity
   * Modify login and log out url from app registration
