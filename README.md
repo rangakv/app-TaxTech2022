@@ -1,7 +1,7 @@
 # app-TaxTech2022
 ## Software Stack
 
-  *.Net Core
+  * .Net Core
   * Azure
   * 
 #High Level Configuration Steps: 
