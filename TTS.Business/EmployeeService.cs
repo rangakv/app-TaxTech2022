@@ -36,5 +36,11 @@ namespace TTS.Business
                 _ttsDBContext.SaveChanges();
             }
         }
+        public void DeleteEmployee(int id)
+        {
+            Employee emp = _ttsDBContext.Employee.Where(e => e.EmployeeId == id).FirstOrDefault();
+            emp.AudioPath = string.Empty;
+            _ttsDBContext.SaveChanges();
+        }
     }
 }

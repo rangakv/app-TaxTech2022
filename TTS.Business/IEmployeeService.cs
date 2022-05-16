@@ -11,5 +11,6 @@ namespace TTS.Business
         Employee GetEmployeeDetails(int id);
         Employee GetEmployeeVoiceDetails(string name);
         void OptoutEmployee(int id, bool optOut);
+        void DeleteEmployee(int id);
     }
 }

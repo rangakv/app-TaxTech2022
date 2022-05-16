@@ -35,20 +35,20 @@ namespace TTS.Web
             services.AddTransient<IEmployeeService, EmployeeService>();
             services.AddTransient<IBlobService, BlobService>();
             services.AddDbContext<ttsdbContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
-            //services.AddMicrosoftIdentityWebAppAuthentication(Configuration, "AzureAd");
+            services.AddMicrosoftIdentityWebAppAuthentication(Configuration, "AzureAd");
 
-            //services.AddRazorPages().AddMvcOptions(options =>
-            //{
-            //    var policy = new AuthorizationPolicyBuilder()
-            //                  .RequireAuthenticatedUser()
-            //                  .Build();
-            //    options.Filters.Add(new AuthorizeFilter(policy));
-            //});
+            services.AddRazorPages().AddMvcOptions(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                              .RequireAuthenticatedUser()
+                              .Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            });
             services.AddAuthorization(options =>
             {                
                 List<string> roles = new List<string>() { "TaxTechAdmin", "TaxTechUser" };
-                options.AddPolicy("TaxTechAdmin", policy => policy.RequireClaim("role", "TaxTechAdmin"));
-                options.AddPolicy("TaxTechUser", policy => policy.RequireClaim("role", roles.ToArray()));
+                options.AddPolicy("TaxTechAdmin", policy => policy.RequireClaim("roles", "TaxTechAdmin"));
+                options.AddPolicy("TaxTechUser", policy => policy.RequireClaim("roles", "TaxTechAdmin", "TaxTechUser"));
             });
         }
 

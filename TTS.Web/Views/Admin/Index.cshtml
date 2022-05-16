@@ -1,25 +1,84 @@
-﻿@using System.Security.Claims;
-<head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
+﻿@model List<TTS.Data.Models.Employee>
+@{
+   
+}
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="https://cdn.datatables.net/1.12.0/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.12.0/css/jquery.dataTables.min.css" />
 
-<div class="text-center">
-    <h1 class="display-4">Displaying all the claims</h1>
-    <table class="table" table-dark">
-        <thead>
-            <tr>
-                <th scope="col">Claim type</th>
-                <th scope="col">Claim Value</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var _claim in ((ClaimsIdentity)User.Identity).Claims)
-            {
-                <tr>
-                    <td>@_claim.Type</td>
-                    <td>@_claim.Value</td>
-                </tr>
+
+<script type="text/javascript">
+    function delemp(id) {
+        $.ajax({
+            url: 'Admin/DeleteAudio' + "?id=" + id,
+            success: function (result) {
+                alert("deleted successfully");
+                location.reload();
             }
-        </tbody>
-    </table>
-</div>
+        });
+    }
+    $(document).ready(function () {
+        $('#tblEmpl').dataTable();
+    });
+
+
+</script>
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+</style>
+
+<table id="tblEmpl" style="border:1px solid black">
+    <thead>
+        <tr>
+            <th>EmployeeId</th>
+            <th>EmployeeName</th>
+            <th>NonStandard</th>
+            <th>AudioPath</th>
+            <th>OptOut</th>
+            <th>PreferredName</th>
+            <th>Audio</th>
+            <th>Delete Audio</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td id="empId">
+                    <input type="hidden" id="hid_" + />
+                    @Html.HiddenFor(Model => item)
+                    @item.EmployeeId
+                </td>
+                <td>
+                    @item.EmployeeName
+                </td>
+                <td>
+                    @item.NonStandard
+                </td>
+                <td>
+                    @item.AudioPath
+                </td>
+                <td>
+                    @item.Optout
+
+                </td>
+                <td>
+                    @item.PrefferedName
+                </td>
+                <td>
+                    <audio controls>
+                        <source src="@Url.Action("PlayEmployeeVoice", "Home", new { audiopath = @item.AudioPath})" type="audio/mpeg" />
+                    </audio>
+                </td>
+                <td>
+                    <button onclick="delemp(@item.EmployeeId)" class="btn-primary">Delete Audio</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

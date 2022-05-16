@@ -18,7 +18,7 @@ using TTS.Web.Models;
 
 namespace TTS.Web.Controllers
 {
-    //[Authorize(Policy = "TaxTechAdmin,TaxTechUser")]
+    [Authorize(Policy = "TaxTechUser")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
