@@ -1,13 +1,19 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Identity.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TTS.Business;
+using TTS.Data.Models;
+using TTS.Security;
 
 namespace TTS.Web
 {
@@ -25,6 +31,25 @@ namespace TTS.Web
         {
             services.AddControllersWithViews();
             services.AddTransient<ITextToSpeech, TextToSpeechService>();
+            services.AddTransient<IKeyVaultService, KeyVaultService>();
+            services.AddTransient<IEmployeeService, EmployeeService>();
+            services.AddTransient<IBlobService, BlobService>();
+            services.AddDbContext<ttsdbContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+            //services.AddMicrosoftIdentityWebAppAuthentication(Configuration, "AzureAd");
+
+            //services.AddRazorPages().AddMvcOptions(options =>
+            //{
+            //    var policy = new AuthorizationPolicyBuilder()
+            //                  .RequireAuthenticatedUser()
+            //                  .Build();
+            //    options.Filters.Add(new AuthorizeFilter(policy));
+            //});
+            services.AddAuthorization(options =>
+            {                
+                List<string> roles = new List<string>() { "TaxTechAdmin", "TaxTechUser" };
+                options.AddPolicy("TaxTechAdmin", policy => policy.RequireClaim("role", "TaxTechAdmin"));
+                options.AddPolicy("TaxTechUser", policy => policy.RequireClaim("role", roles.ToArray()));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,7 +66,7 @@ namespace TTS.Web
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -20,12 +20,10 @@ namespace TTS.Business
         /// <param name="content">Text content for speech</param>
         /// <param name="lang">Speech conversion language</param>
         /// <returns></returns>
-        public async Task<byte[]> TranslateText(string token, string key, string content, string lang, string serviceuri)
+        public async Task<byte[]> TranslateText(string token, string key, string content,string gender, string neuralCode,string prosodyrate,string pitchrate, string serviceuri)
         {
-            //Request url for the speech api.
-            //string uri = "https://eastus.tts.speech.microsoft.com/cognitiveservices/v1";
             //Generate Speech Synthesis Markup Language (SSML)
-            var requestBody = this.GenerateSsml(lang, "Female", lang, content, "en-US-ChristopherNeural");
+            var requestBody = this.GenerateSsml("en-US", gender, "en-US", content, neuralCode, prosodyrate, pitchrate);
 
             using (var client = new HttpClient())
             using (var request = new HttpRequestMessage())
@@ -65,9 +63,9 @@ namespace TTS.Business
             }
         }
 
-        private string GenerateSsml(string lang, string gender, object p, string messageBody, string neural)
-        {
-            string body = @"<speak version='1.0' xml:lang='" + lang + "'><voice xml:gender='Male' xml:lang='" + lang + "' name='" + neural + "'>" + messageBody + "</voice></speak>";
+        private string GenerateSsml(string lang, string gender, object p, string messageBody, string neural, string prosodyrate, string pitchrate)
+        {            
+            string body = @"<speak version='1.0' xml:lang='" + lang + "'><voice xml:gender='" + gender + "' xml:lang='" + lang + "' name='" + neural + "'><prosody rate='"+ prosodyrate + "' pitch='" + pitchrate + "'> " + messageBody + " </prosody></voice></speak>";            
             return body;
         }
     }

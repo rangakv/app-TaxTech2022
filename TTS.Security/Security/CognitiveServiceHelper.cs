@@ -41,7 +41,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace TTS.Business
+namespace TTS.Security
 {
     /// <summary>
     /// This class demonstrates how to get a valid O-auth token
