@@ -7,6 +7,6 @@ namespace TTS.Business
 {
     public interface ITextToSpeech
     {
-        Task<byte[]> TranslateText(string token, string key, string content, string lang, string serviceuri);
+        Task<byte[]> TranslateText(string token, string key, string content, string gender, string neuralCode, string prosodyrate, string pitchrate, string serviceuri);
     }
 }

@@ -2,32 +2,145 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(function () {
+        $("#ProsodyRate").on('input', function() {
+            $("#ProsodyValue").text($(this).val());
+        });
 
-<div class="text-center">
-    <h1 class="display-4">Cognitive Services - Text to Speech</h1>    
-</div>
-<br />
-<form asp-controller="Home" asp-action="Index" method="post">
-    <div class="form-group">
-        <div class="row">
-            <div class="col-md-4">
-                <label class="col-form-label">Neural Selection</label>
-                <select asp-items="Model.NeuralPreference" class="btn btn-primary dropdown-toggle" id="ddlLangCode" asp-for="NeuralEndPoint"></select>
-            </div>
-            <div class="col-md-4">
-                <textarea asp-for="Content" rows="5" cols="40" class="alert-primary"></textarea>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-            <div class="col-md-4">
-                <label class="col-form-label">Play Voice</label>
-                @if (!string.IsNullOrEmpty(ViewBag.Token))
+        $("#PitchRate").on('input', function() {
+            $("#PitchValue").text($(this).val());
+        });
+
+        $("#ddlEmployee").on("change", function () {
+            $("#dvEmployeeDetails").html('');
+            $.ajax(
                 {
-                    <audio controls>
-                        <source src="@Url.Action("Translate", "Home", new { token = ViewBag.Token, key = ViewBag.Key, content = ViewBag.Content, lang = ViewBag.languagecode, serviceuri = ViewBag.serviceuri })" type="audio/mpeg" />
-                    </audio>
-                }
+                    url: '/Home/GetEmployeeDetails?id=' + $(this).val(),
+                    type: 'GET',
+                    data: "",
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        $("#dvEmployeeDetails").html('');
+                        $("#dvEmployeeDetails").html(data);
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+        });
+    });
+</script>
+@*<div class="text-center">
+    <h2 class="display-4">Cognitive Services - Text to Speech</h2>
+</div>*@
+<br />
+
+<form asp-controller="Home" asp-action="Index" method="post" class="form-row align-items-center">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Text To Speech</h5>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="LanguageCode">Neural</label>
+                        <div class="col-sm-7">
+                            <select asp-items="Model.LanguagePreference" class="form-control" id="ddlLangCode" asp-for="NeuralCode"></select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="empname" class="col-sm-4 col-form-label">Name</label>
+                        <div class="col-sm-7">
+                            <input type="text" asp-for="Content" class="form-control" placeholder="Name" />
+                        </div>
+                    </div>
+                    <fieldset class="form-group">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-4 pt-0">Gender</legend>
+                            <div class="col-sm-3">
+                                <div class="form-check">
+                                    <input asp-for="Gender" class="form-check-input" type="radio" value="Male">
+                                    <label class="form-check-label" for="Gender">
+                                        Male
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input asp-for="Gender" class="form-check-input" type="radio" value="Female">
+                                    <label class="form-check-label" for="Gender">
+                                        Female
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <button type="submit" class="btn btn-primary float-right">Play</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="form-group row">
+                        <div class="col-sm-8 form-check form-switch">
+                            <input type="checkbox" data-toggle="toggle" data-size="sm" asp-for="PlayEmployeeVoice" checked>
+                            <label class="col-form-label" > Play Employee voice</label>
+                        </div>
+                                            
+                    </div>                   
+                    <div class="form-group row">
+                        <br />
+                        <label class="col-sm-6 col-form-label" for="ProsodyRate">Voice Speed: <span id="ProsodyValue"></span></label>
+                        <div class="col-sm-5">
+                            <input type="range" min="0" max="3" step="0.01" value="1" asp-for="ProsodyRate">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <br />
+                        <label class="col-sm-6 col-form-label" for="PitchRate">Pitch: <span id="PitchValue"></span></label>
+                        <div class="col-sm-5">
+                            <input type="range" min="0" max="2" step="0.01" value="1" asp-for="PitchRate">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            @if (!string.IsNullOrEmpty(ViewBag.Token))
+                            {
+                                <audio controls autoplay>
+                                    <source src="@Url.Action("Translate", "Home", new { token = ViewBag.Token, key = ViewBag.Key, content = ViewBag.Content, gender = ViewBag.gender, neuralCode = ViewBag.neuralCode, prosodyrate = ViewBag.prosodyrate, pitchrate = ViewBag.pitchrate, serviceuri = ViewBag.serviceuri })" type="audio/mpeg" />
+                                </audio>
+                            }
+                            else @if (!string.IsNullOrEmpty(Model.AudioPath) && Model.PlayEmployeeVoice)
+                            {
+                                <audio controls autoplay>
+                                    <source src="@Url.Action("PlayEmployeeVoice", "Home", new { audiopath = Model.AudioPath})" type="audio/mpeg" />
+                                </audio>
+                            }
+                            else
+                            {
+                            <audio controls>
+                                <source src="" type="audio/mpeg" />
+                            </audio>
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Team Member Info</h5>
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label" for="LanguageCode">Employee:</label>
+                        <div class="col-sm-7">
+                            <select asp-items="Model.EmployeeList" class="form-control" id="ddlEmployee" ></select>
+                        </div>
+                    </div>
+                   <div id="dvEmployeeDetails">
 
+                   </div>
+                </div>
+            </div>
+        </div>
     </div>
 </form>
+
+
+
