@@ -9,46 +9,45 @@
     $(function () {
         $("#chkOptout").on("change", function () {
             var rdata = $("#chkOptout").attr("data-id");
-            var jsonInput = { eid: rdata };            
-            //alert(rdata);
-            //alert($("#chkOptout").is(':checked'));
-            $.ajax(
-                {
-                    url: '/Home/OptoutEmployee',
-                    type: 'POST',
-                    data: JSON.stringify(jsonInput),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (response) {
-                        alert(response);
-                        if (response) {
-                            alert("Update Successful");
-                            location.reload();
-                        }
-                    },
-                    error: function (response) {
-                        if (response != 1) {
-                            alert("Error");
-                        }
-                    }
-                });
+            var optOut = $("#chkOptout").is(':checked');
+            var jsonInput = { eid: rdata, optout: optOut };
+
+            $.ajax({
+                url: '@Url.Action("OptoutEmployee", "Home")',
+                type: 'POST',
+                dataType: 'json',
+                cache: false,
+                data: jsonInput,
+                success: function (data) {
+                    alert('opted out successfully');
+                },
+                error: function (error) {
+                    alert("error");
+                }
+        });
         });
     });
     </script>
     <div class="form-group row">
-        <label for="empname" class="col-sm-5 col-form-label">Name: </label>
+        <label for="empname" class="col-sm-6 col-form-label">Name: </label>
         <div class="col-sm-5">
             <label for="EmployeeName" class="col-form-label">@Model.EmployeeName</label>
         </div>
     </div>
     <div class="form-group row">
-        <label for="NonStandard" class="col-sm-5 col-form-label">Voice Available:</label>
+        <label for="empname" class="col-sm-6 col-form-label">PrefferedName: </label>
+        <div class="col-sm-5">
+            <label for="EmployeeName" class="col-form-label">@Model.PrefferedName</label>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="NonStandard" class="col-sm-6 col-form-label">VoiceAvailable:</label>
         <div class="col-sm-5 form-check form-switch">
             <input type="checkbox" data-toggle="toggle" data-size="sm" @(Model.NonStandard ? "checked" : "") disabled>
         </div>
     </div>
     <div class="form-group row">
-        <label for="OptOut" class="col-sm-5 col-form-label">OptOut:</label>
+        <label for="OptOut" class="col-sm-6 col-form-label">OptOut:</label>
         <div class="col-sm-5">
             <input type="checkbox" data-id="@Model.EmployeeId" id="chkOptout" data-toggle="toggle" data-size="sm" @(Model.Optout ? "checked" : "")>
         </div>

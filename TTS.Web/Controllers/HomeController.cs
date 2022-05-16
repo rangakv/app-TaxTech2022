@@ -107,6 +107,7 @@ namespace TTS.Web.Controllers
             {
                 EmployeeId = model.EmployeeId,
                 EmployeeName = model.EmployeeName,
+                PrefferedName=model.PrefferedName,
                 AudioPath = model.AudioPath,
                 NonStandard = model.NonStandard,
                 Optout = model.Optout
@@ -115,9 +116,9 @@ namespace TTS.Web.Controllers
             return PartialView("_employee", employeeModel);
         }
         [HttpPost]
-        public IActionResult OptoutEmployee(string eid)
+        public IActionResult OptoutEmployee(string eid, bool optout)
         {
-            _employeeService.OptoutEmployee(Convert.ToInt32(eid), false);
+            _employeeService.OptoutEmployee(Convert.ToInt32(eid), optout);
             return Json(new { success = true });
         }
 

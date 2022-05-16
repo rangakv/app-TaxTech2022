@@ -18,5 +18,6 @@ namespace TTS.Web.Models
         public DateTime? CreateDt { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDt { get; set; }
+        public string PrefferedName { get; set; }
     }
 }
